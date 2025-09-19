@@ -5,6 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "check": "biome check --write .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
