@@ -1,17 +1,21 @@
 import { createBot } from "mineflayer"
-import * as mineflayerViewer from "prismarine-viewer"
+
+// import * as mineflayerViewer from "prismarine-viewer"
+
+const host = process.env.BOT_MINECRAFT_HOST
+const username = process.env.BOT_USERNAME
 
 const bot = createBot({
-  host: "localhost",
-  port: 5000,
-  username: "Bot",
+  username,
+  host,
+  port: 4000,
   version: "1.21.4", // 2025/09/05 時点では 1.21.5 以上はエラーが起こる
 })
 
 bot.on("spawn", () => {
   console.log("Bot がログインしました！")
   bot.chat("こんにちは！Bot君です！")
-  mineflayerViewer.mineflayer(bot, { port: 3000, firstPerson: false })
+  // mineflayerViewer.mineflayer(bot, { port: 3000, firstPerson: false })
 })
 
 bot.on("chat", (username, message) => {
