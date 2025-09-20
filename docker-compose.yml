@@ -1,0 +1,58 @@
+services:
+  db:
+    image: pgvector/pgvector:0.8.1-pg17
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_PASSWORD: password
+    tty: true
+    stdin_open: true
+    healthcheck:
+      test: "psql -U postgres -c 'SELECT 1' || exit 1"
+      start_period: 5s
+      interval: 2s
+      timeout: 5s
+      retries: 5
+  bot:
+    build:
+      context: ./bot
+      dockerfile: containers/local/Dockerfile
+    command: /bin/sh -c "pnpm install && pnpm start"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./bot:/bot
+      - /bot/node_modules
+    env_file: .env.bot.local
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  api:
+    build:
+      context: ./api
+      dockerfile: containers/local/Dockerfile
+    command: /bin/bash -c "
+      uv sync;
+      uv run python manage.py runserver 0:5000"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./api:/api
+    tty: true
+    stdin_open: true
+    env_file: .env.api.local
+  web:
+    build:
+      context: ./web
+      dockerfile: containers/local/Dockerfile
+    command: /bin/sh -c "pnpm install && pnpm dev"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./web:/web
+      - /web/node_modules
+    env_file: .env.web.local
+volumes:
+  postgres:
