@@ -4,6 +4,7 @@ const bot = createBot({
   host: "localhost",
   port: 5000,
   username: "Bot",
+  version: "1.21.4", // 2025/09/05 時点では 1.21.5 以上はエラーが起こる
 })
 
 bot.on("spawn", () => {
