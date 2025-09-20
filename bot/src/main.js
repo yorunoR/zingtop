@@ -1,4 +1,5 @@
 import { createBot } from "mineflayer"
+import * as mineflayerViewer from "prismarine-viewer"
 
 const bot = createBot({
   host: "localhost",
@@ -10,6 +11,7 @@ const bot = createBot({
 bot.on("spawn", () => {
   console.log("Bot がログインしました！")
   bot.chat("こんにちは！Bot君です！")
+  mineflayerViewer.mineflayer(bot, { port: 3000, firstPerson: false })
 })
 
 bot.on("chat", (username, message) => {
