@@ -16,7 +16,7 @@ services:
       interval: 2s
       timeout: 5s
       retries: 5
-  bot:
+  alpha:
     build:
       context: ./bot
       dockerfile: containers/local/Dockerfile
@@ -26,7 +26,20 @@ services:
     volumes:
       - ./bot:/bot
       - /bot/node_modules
-    env_file: .env.bot.local
+    env_file: .env.alpha.local
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  beta:
+    build:
+      context: ./bot
+      dockerfile: containers/local/Dockerfile
+    command: /bin/sh -c "pnpm install && pnpm start"
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./bot:/bot
+      - /bot/node_modules
+    env_file: .env.beta.local
     extra_hosts:
       - "host.docker.internal:host-gateway"
   api:

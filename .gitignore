@@ -1,3 +1,1 @@
-/.env.bot.local
-/.env.api.local
-/.env.web.local
+/.env.*.local
