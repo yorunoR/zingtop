@@ -61,6 +61,11 @@ bot.on("chat", (username, message) => {
     bot.look(currentYaw + turnAngle, currentPitch, true)
     bot.chat("Turned left 45°")
   }
+
+  if (message === "jump") {
+    bot.setControlState("jump", true)
+    setTimeout(() => bot.setControlState("jump", false), 400)
+  }
 })
 
 bot.on("error", (err) => console.log("エラー:", err))
